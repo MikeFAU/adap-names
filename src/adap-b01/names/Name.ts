@@ -29,12 +29,8 @@ export class Name {
         }
     }
 
-    /**
-     * Returns a human-readable representation of the Name instance using user-set control characters
-     * Control characters are not escaped (creating a human-readable string)
-     * Users can vary the delimiter character to be used
-     */
-    public asString(delimiter: string = this.delimiter): string {
+    // Returns human-readable representation of Name instance
+    public asNameString(delimiter: string = this.delimiter): string {
         //throw new Error("needs implementation");
         let arrStr = this.components.join(delimiter);
         

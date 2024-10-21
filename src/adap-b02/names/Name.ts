@@ -14,14 +14,11 @@ import { Printable } from "../common/Printable";
  */
 export interface Name extends Printable {
 
-    /**
-     * Returns true, if number of components == 0; else false
-     */
+    // Returns human-readable representation of Name instance
+    asNameString(delimiter?: string): string;
+
     isEmpty(): boolean;
 
-    /** 
-     * Returns number of components in Name instance
-     */
     getNoComponents(): number;
 
     getComponent(i: number): string;
