@@ -29,7 +29,7 @@ export class Name {
         }
     }
 
-    // Returns human-readable representation of Name instance
+    /** Returns human-readable representation of Name instance */
     public asNameString(delimiter: string = this.delimiter): string {
         //throw new Error("needs implementation");
         let arrStr = this.components.join(delimiter);

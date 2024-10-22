@@ -14,7 +14,7 @@ import { Printable } from "../common/Printable";
  */
 export interface Name extends Printable {
 
-    // Returns human-readable representation of Name instance
+    /** Returns human-readable representation of Name instance */
     asNameString(delimiter?: string): string;
 
     isEmpty(): boolean;
