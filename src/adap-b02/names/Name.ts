@@ -19,6 +19,7 @@ export interface Name extends Printable {
 
     isEmpty(): boolean;
 
+    /** Returns number of components in Name instance */
     getNoComponents(): number;
 
     getComponent(i: number): string;
