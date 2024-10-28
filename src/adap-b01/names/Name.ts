@@ -30,6 +30,7 @@ export class Name {
     }
 
     /** Returns human-readable representation of Name instance */
+    /** @methodtype conversion-method */
     public asNameString(delimiter: string = this.delimiter): string {
         //throw new Error("needs implementation");
         let arrStr = this.components.join(delimiter);
@@ -47,9 +48,10 @@ export class Name {
      * The control characters in the data string are the default characters
      */
     public asDataString(): string {
-        return this.asString(DEFAULT_DELIMITER);
+        return this.asNameString(DEFAULT_DELIMITER);
     }
 
+    /** @methodtype get-method */
     public getComponent(i: number): string {
         //throw new Error("needs implementation");
         this.isValidRange(i);
@@ -57,6 +59,7 @@ export class Name {
     }
 
     /** Expects that new Name component c is properly masked */
+    /** @methodtype set-method */
     public setComponent(i: number, c: string): void {
         //throw new Error("needs implementation");
         this.isValidRange(i);
@@ -64,12 +67,14 @@ export class Name {
     }
 
     /** Returns number of components in Name instance */
+    /** @methodtype get-method */
     public getNoComponents(): number {
         //throw new Error("needs implementation");
         return this.components.length;
     }
 
     /** Expects that new Name component c is properly masked */
+    /** @methodtype command-method */
     public insert(i: number, c: string): void {
         //throw new Error("needs implementation");
         this.isValidRange(i);
@@ -77,17 +82,20 @@ export class Name {
     }
 
     /** Expects that new Name component c is properly masked */
+    /** @methodtype command-method */
     public append(c: string): void {
         //throw new Error("needs implementation");
         this.appended = c;
     }
 
+    /** @methodtype command-method */
     public remove(i: number): void {
         //throw new Error("needs implementation");
         this.isValidRange(i);
         this.components.splice(i, 1);
     }
 
+    /** @methodtype assertion-method */
     protected isValidRange(i: number): void {
         if (i < 0 || i >= this.components.length)
             throw new RangeError("Out of Range");
