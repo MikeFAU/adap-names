@@ -8,16 +8,24 @@ export class StringName implements Name {
     protected noComponents: number = 0;
 
     constructor(other: string, delimiter?: string) {
+        this.isNotNone(other);
         this.name = other;
         if (delimiter != null && delimiter != undefined){
             this.delimiter = delimiter;
         }
-        this.name = this.name.replaceAll(this.delimiter, ESCAPE_CHARACTER+DEFAULT_DELIMITER);
     }
 
     /** @methodtype conversion-method */
     public asString(delimiter: string = this.delimiter): string {
-        return this.name.replaceAll(ESCAPE_CHARACTER+DEFAULT_DELIMITER, delimiter);
+
+        let returnName = this.name;
+        // User would like to use own delimter
+        if (this.delimiter != delimiter){
+            returnName = returnName.replaceAll(this.delimiter, delimiter);
+        }
+
+        // Remove all escaped characters. Human readable only!
+        return returnName.replaceAll(ESCAPE_CHARACTER+delimiter, delimiter);
     }
 
     /** @methodtype conversion-method */
@@ -37,20 +45,20 @@ export class StringName implements Name {
 
     /** @methodtype get-method */
     public getNoComponents(): number {
-        return this.getComponents().length;
+        return this.createArrayByDelimiter(this.name).length;
     }
 
     /** @methodtype get-method */
     public getComponent(x: number): string {
         this.isValidRange(x);
-        return this.getComponents()[x];
+        return this.createArrayByDelimiter(this.name)[x];
     }
 
     /** @methodtype set-method */
     public setComponent(n: number, c: string): void {
         this.isValidRange(n);
         this.isNotNone(c);
-        let comps = this.getComponents();
+        let comps = this.createArrayByDelimiter(this.name);
 
         // Change
         comps[n] = c;
@@ -65,7 +73,7 @@ export class StringName implements Name {
         this.isNotNone(c);
 
         // Change
-        let comps = this.getComponents();
+        let comps = this.createArrayByDelimiter(this.name);
         comps.splice(n, 0, c);
 
         // Update
@@ -77,7 +85,7 @@ export class StringName implements Name {
         this.isNotNone(c);
 
         // Change
-        let comps = this.getComponents();
+        let comps = this.createArrayByDelimiter(this.name);
         comps.splice(this.getNoComponents(), 0, c);
 
         // Update
@@ -89,7 +97,7 @@ export class StringName implements Name {
         this.isValidRange(n);
 
         // Change
-        let comps = this.getComponents();
+        let comps = this.createArrayByDelimiter(this.name);
         comps.splice(n, 1);
 
         // Update
@@ -100,26 +108,51 @@ export class StringName implements Name {
     public concat(other: Name): void {
         this.isNotNone(other);
 
-        let otherComps = other.asDataString().split(ESCAPE_CHARACTER+DEFAULT_DELIMITER);
+        let otherComps = this.createArrayByDelimiter(other.asDataString());
         for (var comp of otherComps){
             this.append(comp);
         }
     }
 
-    /** @methodtype get-method */
-    private getComponents(): string[] {
-        return this.name.split(ESCAPE_CHARACTER+DEFAULT_DELIMITER);
+    /** @methodtype helper-method */
+    private createArrayByDelimiter(inputName: String): string[] {
+        
+        let retArr:string[] = [];
+        let tempStr:string = "";
+        let lastChar:string = "";
+        for (let i = 0; i < inputName.length; i++){
+
+            // Check if current char is a control character that is not escaped
+            if (inputName[i] === this.delimiter && lastChar != "" && lastChar != ESCAPE_CHARACTER){
+                retArr.push(tempStr);
+                tempStr = "";
+                continue;
+            }
+
+            // Append to tempStr
+            tempStr = tempStr + inputName[i];
+
+            // Always remember last char to check for escape char
+            lastChar = inputName[i];
+
+            // Edge Case: Last char
+            if (i === inputName.length -1 ){
+                retArr.push(tempStr);
+            }
+        }
+
+        return retArr;
     }
 
     /** @methodtype helper-method */
     private updateName(c: string[]): void {
-        let newName = c.join(ESCAPE_CHARACTER+DEFAULT_DELIMITER);
+        let newName = c.join(this.delimiter);
         this.name = newName;
     }
 
     /** @methodtype assertion-method */
     protected isValidRange(i: number): void {
-        if (i < 0 || i >= this.getComponents().length)
+        if (i < 0 || i >= this.createArrayByDelimiter(this.name).length)
             throw new RangeError("Out of Range");
     }
 

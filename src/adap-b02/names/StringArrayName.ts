@@ -7,6 +7,7 @@ export class StringArrayName implements Name {
     protected components: string[] = [];
 
     constructor(other: string[], delimiter?: string) {
+        this.isNotNone(other);
         this.components = other;
         if (delimiter != null && delimiter != undefined){
             this.delimiter = delimiter;
@@ -16,12 +17,12 @@ export class StringArrayName implements Name {
     /** Returns human-readable representation of Name instance */
     /** @methodtype conversion-method */
     public asString(delimiter: string = this.delimiter): string {
-        return this.components.join(delimiter);
+        return this.components.join(delimiter).replaceAll(ESCAPE_CHARACTER+delimiter, delimiter);
     }
 
     /** @methodtype conversion-method */
     public asDataString(): string {
-        return this.components.join(ESCAPE_CHARACTER+DEFAULT_DELIMITER);
+        return this.components.join(DEFAULT_DELIMITER);
     }
 
     /** @methodtype assertion-method */
@@ -73,9 +74,8 @@ export class StringArrayName implements Name {
     public concat(other: Name): void {
         this.isNotNone(other);
 
-        let otherComps = other.asDataString().split(ESCAPE_CHARACTER+DEFAULT_DELIMITER);
-        for (var comp of otherComps){
-            this.append(comp);
+        for(let i = 0; i < other.getNoComponents(); i++){
+            this.append(other.getComponent(i));
         }
     }
 
@@ -86,7 +86,7 @@ export class StringArrayName implements Name {
     }
 
     /** @methodtype assertion-method */
-    protected isNotNone(other: Name): void {
+    protected isNotNone(other: Object): void {
         if (other === null || other === undefined )
             throw new TypeError("No Inputdata given");
     }

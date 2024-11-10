@@ -7,10 +7,20 @@ import { StringArrayName } from "../../../src/adap-b02/names/StringArrayName";
 describe("Own Basic StringArrayName function tests", () => {
   it("test data string representation", () => {
     let n: Name = new StringArrayName(["oss", "fau", "de"]);
-    expect(n.asDataString()).toBe("oss\\.fau\\.de");
+    expect(n.asDataString()).toBe("oss.fau.de");
   });
 
-  it("test conect", () => {
+  it("test string representation basic", () => {
+    let n: Name = new StringArrayName(["oss", "fau", "de"], ".");
+    expect(n.asString()).toBe("oss.fau.de");
+  });
+
+  it("test string representation advance", () => {
+    let n: Name = new StringArrayName(["oss", "fau", "de"], "#");
+    expect(n.asString("#")).toBe("oss#fau#de");
+  });
+
+  it("test concat", () => {
     let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
     let other: StringArrayName = new StringArrayName(["own", "test"]);
     n.concat(other);
@@ -21,11 +31,17 @@ describe("Own Basic StringArrayName function tests", () => {
 describe("Own Basic StringName function tests", () => {
   it("test data string representation", () => {
     let n: Name = new StringName("oss.fau.de");
-    expect(n.asDataString()).toBe("oss\\.fau\\.de");
+    expect(n.asDataString()).toBe("oss.fau.de");
   });
-  it("test string representation", () => {
+
+  it("test string representation basic", () => {
     let n: Name = new StringName("oss.fau.de");
     expect(n.asString()).toBe("oss.fau.de");
+  });
+
+  it("test string representation advance", () => {
+    let n: Name = new StringName("oss.fau.de");
+    expect(n.asString("#")).toBe("oss#fau#de");
   });
 
   it("test number of comps", () => {
