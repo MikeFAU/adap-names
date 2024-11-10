@@ -11,13 +11,34 @@ describe("Own Basic StringArrayName function tests", () => {
   });
 
   it("test string representation basic", () => {
-    let n: Name = new StringArrayName(["oss", "fau", "de"], ".");
+    let n: Name = new StringArrayName(["oss", "fau", "de"]);
     expect(n.asString()).toBe("oss.fau.de");
   });
 
   it("test string representation advance", () => {
     let n: Name = new StringArrayName(["oss", "fau", "de"], "#");
     expect(n.asString("#")).toBe("oss#fau#de");
+  });
+
+  it("test number of comps", () => {
+    let n: Name = new StringArrayName(["oss", "fau", "de"]);
+    expect(n.getNoComponents()).toBe(3);
+  });
+
+  it("test is empty", () => {
+    let n: Name = new StringArrayName([]);
+    expect(n.isEmpty()).toBe(true);
+  });
+
+  it("test get Component", () => {
+    let n: Name = new StringArrayName(["oss", "fau", "de"]);
+    expect(n.getComponent(1)).toBe("fau");
+  });
+
+  it("test set Component", () => {
+    let n: Name = new StringArrayName(["oss", "fau", "de"]);
+    n.setComponent(1, "new")
+    expect(n.asString()).toBe("oss.new.de");
   });
 
   it("test concat", () => {
@@ -47,6 +68,16 @@ describe("Own Basic StringName function tests", () => {
   it("test number of comps", () => {
     let n: Name = new StringName("oss.fau.de");
     expect(n.getNoComponents()).toBe(3);
+  });
+
+  it("test number of comps advance 1", () => {
+    let n: Name = new StringName("///", "/");
+    expect(n.getNoComponents()).toBe(4);
+  });
+
+  it("test number of comps advance 2", () => {
+    let n: Name = new StringName("Oh\\.\\.\\.", ".");
+    expect(n.getNoComponents()).toBe(1);
   });
 
   it("test is empty", () => {

@@ -121,16 +121,20 @@ export class StringName implements Name {
         let tempStr:string = "";
         let lastChar:string = "";
         for (let i = 0; i < inputName.length; i++){
-
+            let add = true;
             // Check if current char is a control character that is not escaped
-            if (inputName[i] === this.delimiter && lastChar != "" && lastChar != ESCAPE_CHARACTER){
+            if (inputName[i] === this.delimiter && lastChar != ESCAPE_CHARACTER){
                 retArr.push(tempStr);
                 tempStr = "";
-                continue;
+
+                // Do not add control characters to temp string
+                add = false;
             }
 
             // Append to tempStr
-            tempStr = tempStr + inputName[i];
+            if (add){
+                tempStr = tempStr + inputName[i];
+            }
 
             // Always remember last char to check for escape char
             lastChar = inputName[i];
