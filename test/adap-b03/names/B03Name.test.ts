@@ -37,6 +37,14 @@ describe("Basic AbstractName function tests with StringName", () => {
         expect(n1.isEqual(n2)).toBe(false);
         expect(n1.getHashCode() === n2.getHashCode()).toBe(false)
     });
+
+    it("test clone", () => {
+        let n1: StringName = new StringName("oss#fau#de", "#");
+        let n2 = n1.clone();
+
+        expect(n1.isEqual(n2)).toBe(true);
+        expect(n1.getHashCode() === n2.getHashCode()).toBe(true)
+    });
 });
 
 describe("Basic AbstractName function tests with StringArrayName", () => {
@@ -71,5 +79,13 @@ describe("Basic AbstractName function tests with StringArrayName", () => {
 
         expect(n1.isEqual(n2)).toBe(false);
         expect(n1.getHashCode() === n2.getHashCode()).toBe(false)
+    });
+
+    it("test clone", () => {
+        let n1: StringArrayName = new StringArrayName(["oss", "fau", "de"], "#");
+        let n2 = n1.clone();
+
+        expect(n1.isEqual(n2)).toBe(true);
+        expect(n1.getHashCode() === n2.getHashCode()).toBe(true)
     });
 });

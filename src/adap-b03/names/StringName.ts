@@ -69,6 +69,10 @@ export class StringName extends AbstractName {
         this.updateName(comps);
     }
 
+    createEmptyNameWithEqualDelimiter(): Name {
+        return new StringName("", this.getDelimiterCharacter());
+    }
+
     //#############################################################//
     // Further methods added
 

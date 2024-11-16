@@ -40,4 +40,8 @@ export class StringArrayName extends AbstractName {
         this.isValidRange(i);
         this.components.splice(i, 1);
     }
+
+    createEmptyNameWithEqualDelimiter(): Name {
+        return new StringArrayName([], this.getDelimiterCharacter());
+    }
 }

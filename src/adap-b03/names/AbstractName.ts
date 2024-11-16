@@ -67,9 +67,12 @@ export abstract class AbstractName implements Name {
         return hashCode;
     }
 
-    /** @methodtype helper-method */
+    /** @methodtype cloning-method */
     public clone(): Name {
-        throw new Error("needs implementation");
+        let n: Name = this.createEmptyNameWithEqualDelimiter();
+        n.concat(this);
+
+        return n;
     }
 
     /** @methodtype assertion-method */
@@ -96,6 +99,9 @@ export abstract class AbstractName implements Name {
     abstract append(c: string): void;
     /** @methodtype command-method */
     abstract remove(i: number): void;
+
+    /** @methodtype factory-method */
+    abstract createEmptyNameWithEqualDelimiter(): Name;
 
     /** @methodtype command-method */
     public concat(other: Name): void {
