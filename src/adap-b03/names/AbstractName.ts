@@ -29,12 +29,42 @@ export abstract class AbstractName implements Name {
 
     /** @methodtype assertion-method */
     public isEqual(other: Name): boolean {
-        throw new Error("needs implementation or deletion");
+        this.isNotNone(other);
+        
+        // Check if deliminiter is equal
+        if(this.getDelimiterCharacter() != other.getDelimiterCharacter())
+            return false;
+
+        // Check if number of components are equal
+        if(this.getNoComponents() != other.getNoComponents())
+            return false;
+
+        // Check if all single components are equal
+        for(let i = 0; i < this.getNoComponents(); i++){
+            if(this.getComponent(i) != other.getComponent(i))
+                return false;
+        }
+
+        // Everything is the same
+        return true;
     }
 
     /** @methodtype get-method */
     public getHashCode(): number {
-        throw new Error("needs implementation or deletion");
+        // See ADAP B01 slide 19f - Used adapted hash code implementation
+        
+        let hashCode: number = 0;
+        let c:number = 0;
+        const s: string = this.getNoComponents()+this.getDelimiterCharacter()+this.getNameArray().join(this.getDelimiterCharacter());
+        //console.info(s);
+
+        for (let i = 0; i < s.length; i++){
+            c = s.charCodeAt(i);
+            hashCode = (hashCode << 5) - hashCode + c;
+            hashCode |= 0;
+        }
+
+        return hashCode;
     }
 
     /** @methodtype helper-method */
