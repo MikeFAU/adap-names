@@ -1,6 +1,6 @@
 import { DEFAULT_DELIMITER, ESCAPE_CHARACTER } from "../common/Printable";
 import { Name } from "./Name";
-import { AbstractName } from "./AbstractName";
+import { AbstractName , NameAssertType} from "./AbstractName";
 
 export class StringName extends AbstractName {
 
@@ -10,7 +10,10 @@ export class StringName extends AbstractName {
     constructor(other: string, delimiter?: string) {
         super(delimiter);
 
-        this.isNotNone(other);
+        // Precondition
+        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, "Invalid input data given");
+
+        // Execution
         this.name = other;
     }
 
@@ -19,13 +22,20 @@ export class StringName extends AbstractName {
     }
 
     public getComponent(i: number): string {
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
         this.isValidRange(i);
+
         return this.createArrayByDelimiter(this.name)[i];
     }
 
     public setComponent(i: number, c: string) {
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
         this.isValidRange(i);
-        this.isNotNone(c);
+
+        // Execution
         let comps = this.createArrayByDelimiter(this.name);
 
         // Change
@@ -33,11 +43,16 @@ export class StringName extends AbstractName {
 
         // Update
         this.updateName(comps);
+
+        // Class invariants
+        this.assertClassInvariants();
     }
 
     public insert(i: number, c: string) {
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
         this.isValidRange(i);
-        this.isNotNone(c);
 
         // Change
         let comps = this.createArrayByDelimiter(this.name);
@@ -48,7 +63,8 @@ export class StringName extends AbstractName {
     }
 
     public append(c: string) {
-        this.isNotNone(c);
+        // Precondition
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
 
         // Change
         let comps = this.createArrayByDelimiter(this.name);
@@ -59,6 +75,8 @@ export class StringName extends AbstractName {
     }
 
     public remove(i: number) {
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
         this.isValidRange(i);
 
         // Change
