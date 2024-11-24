@@ -31,7 +31,7 @@ export class Name {
 
     /** Returns human-readable representation of Name instance */
     /** @methodtype conversion-method */
-    public asNameString(delimiter: string = this.delimiter): string {
+    public asString(delimiter: string = this.delimiter): string {
         //throw new Error("needs implementation");
         let arrStr = this.components.join(delimiter);
         
@@ -48,7 +48,7 @@ export class Name {
      * The control characters in the data string are the default characters
      */
     public asDataString(): string {
-        return this.asNameString(DEFAULT_DELIMITER);
+        return this.asString(DEFAULT_DELIMITER);
     }
 
     /** @methodtype get-method */
