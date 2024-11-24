@@ -21,7 +21,7 @@ describe("StringName Design by Contract testing", () => {
         let err_msg = "Invalid input data given";
         //let value: string | undefined | null = undefined;
 
-        expect(() => new StringName(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => new StringName((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     it("test invalid input asString", async () => {
@@ -29,7 +29,7 @@ describe("StringName Design by Contract testing", () => {
         //let value: string | undefined | null = null;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.asString(null)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.asString((null as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     it("test invalid input isEqual", async () => {
@@ -37,7 +37,7 @@ describe("StringName Design by Contract testing", () => {
         //let value: Name | undefined | null = undefined;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.isEqual(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.isEqual((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     it("test invalid input concat", async () => {
@@ -45,7 +45,7 @@ describe("StringName Design by Contract testing", () => {
         //let value: Name | undefined | null = undefined;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.concat(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.concat((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     // Implementation is part of StringName
@@ -55,7 +55,7 @@ describe("StringName Design by Contract testing", () => {
         let value: number;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.getComponent(undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.getComponent((undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         value = 100;
@@ -70,8 +70,8 @@ describe("StringName Design by Contract testing", () => {
         let comp: string;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.setComponent(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.setComponent(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.setComponent((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.setComponent(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -92,8 +92,8 @@ describe("StringName Design by Contract testing", () => {
         let comp: string;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.insert(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.insert(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -113,8 +113,8 @@ describe("StringName Design by Contract testing", () => {
         let comp: string;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.insert(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.insert(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -132,7 +132,7 @@ describe("StringName Design by Contract testing", () => {
         let idx: number;
         let n: StringName = new StringName("oss.fau.de");
 
-        expect(() => n.remove(undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.remove((undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -148,9 +148,9 @@ describe("StringArrayName Design by Contract testing", () => {
         //let value: string[] | undefined | null = undefined;
         let value: string[];
 
-        expect(() => new StringArrayName(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => new StringArrayName((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
 
-        value = ["oss", "fau", undefined];
+        value = ["oss", "fau", (undefined as any)];
         expect(() => new StringArrayName(value)).toThrow(new IllegalArgumentException(err_msg));
     });
 
@@ -159,7 +159,7 @@ describe("StringArrayName Design by Contract testing", () => {
         //let value: string | undefined | null = null;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.asString(null)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.asString((null as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     it("test invalid input isEqual", async () => {
@@ -167,7 +167,7 @@ describe("StringArrayName Design by Contract testing", () => {
         //let value: Name | undefined | null = undefined;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.isEqual(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.isEqual((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     it("test invalid input concat", async () => {
@@ -175,7 +175,7 @@ describe("StringArrayName Design by Contract testing", () => {
         //let value: Name | undefined | null = undefined;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.concat(undefined)).toThrow(new IllegalArgumentException(err_msg)); 
+        expect(() => n.concat((undefined as any))).toThrow(new IllegalArgumentException(err_msg)); 
     });
 
     // Implementation is part of StringName
@@ -185,7 +185,7 @@ describe("StringArrayName Design by Contract testing", () => {
         let value: number;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.getComponent(undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.getComponent((undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         value = 100;
@@ -200,8 +200,8 @@ describe("StringArrayName Design by Contract testing", () => {
         let comp: string;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.setComponent(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.setComponent(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.setComponent((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.setComponent(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -222,8 +222,8 @@ describe("StringArrayName Design by Contract testing", () => {
         let comp: string;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.insert(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.insert(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -243,8 +243,8 @@ describe("StringArrayName Design by Contract testing", () => {
         let comp: string;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.insert(undefined, "")).toThrow(new IllegalArgumentException(err_msg));
-        expect(() => n.insert(0, undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert((undefined as any), "")).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.insert(0, (undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
@@ -262,7 +262,7 @@ describe("StringArrayName Design by Contract testing", () => {
         let idx: number;
         let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
 
-        expect(() => n.remove(undefined)).toThrow(new IllegalArgumentException(err_msg));
+        expect(() => n.remove((undefined as any))).toThrow(new IllegalArgumentException(err_msg));
         
         err_msg = "Out of Range";
         idx = 100;
