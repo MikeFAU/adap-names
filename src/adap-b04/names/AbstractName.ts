@@ -13,11 +13,13 @@ export enum NameAssertType {
 export abstract class AbstractName implements Name {
 
     protected delimiter: string = DEFAULT_DELIMITER;
+    protected err_msg_invalid_input = "Invalid input data given";
     
 
     constructor(delimiter: string = DEFAULT_DELIMITER) {
         // Precondition
-        this.isNotNullOrUndefined(delimiter, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(delimiter, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        console.info("Super Constr: "+delimiter);
 
         // Execution
         this.doSetDelimiter(delimiter);
@@ -40,7 +42,7 @@ export abstract class AbstractName implements Name {
     /** @methodtype conversion-method */
     public asString(delimiter: string = this.delimiter): string {
         // Precondition
-        this.isNotNullOrUndefined(delimiter, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(delimiter, NameAssertType.PRECOND, this.err_msg_invalid_input);
 
         // Class Invariants
         this.assertClassInvariants();
@@ -65,7 +67,7 @@ export abstract class AbstractName implements Name {
     /** @methodtype assertion-method */
     public isEqual(other: Name): boolean {
         // Preconditions
-        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, this.err_msg_invalid_input);
 
         // Class Invariants
         this.assertClassInvariants();
@@ -142,19 +144,21 @@ export abstract class AbstractName implements Name {
     /** @methodtype factory-method */
     abstract createEmptyNameWithEqualDelimiter(): Name;
 
+    /** @methodtype command-method */
     public concat(other: Name): void {
         // Precondition
-        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, this.err_msg_invalid_input);
 
+        // Class Invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
         let n:number = this.getNoComponents() + other.getNoComponents();
 
         for(let i = 0; i < other.getNoComponents(); i++){
             this.append(other.getComponent(i));
         }
         
-        // Class Invariants
-        this.assertClassInvariants();
-
         // Postcondition
         this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after concat");
     }
@@ -184,9 +188,23 @@ export abstract class AbstractName implements Name {
 
     /** @methodtype assertion-method */
     protected isValidRange(i: number): void {
-        this.isCond((i >= 0 || i < this.getNoComponents()), NameAssertType.PRECOND, "Out of Range");
+        this.isCond((i >= 0 && i < this.getNoComponents()), NameAssertType.PRECOND, "Out of Range");
     }
 
+    /** @methodtype assertion-method */
+    protected isCorrectlyEscaped(c: string): void {
+
+        let lastChar:string = "";
+        for (let i = 0; i < c.length; i++){
+            // Check if current char is a control character that is not escaped
+            if(c[i] === this.doGetDelimiter()){
+                this.isCond(lastChar === ESCAPE_CHARACTER, NameAssertType.PRECOND, "Component not correctly escaped");
+            }
+            lastChar = c[i];
+        }
+    }
+
+    /** @methodtype assertion-method */
     protected assertClassInvariants(): void {
         this.isNotNullOrUndefined(this.doGetDelimiter(), NameAssertType.CLASSINVAR, "Delimiter String invalid");
         this.isNotNullOrUndefined(this.doGetNameArray(), NameAssertType.CLASSINVAR, "Name variable is invalid");
@@ -195,22 +213,24 @@ export abstract class AbstractName implements Name {
 
     /** @methodtype assertion-method */
     protected isNotNullOrUndefined(other: Object, assertType:NameAssertType, msg:string): void {
-        if(assertType = NameAssertType.PRECOND) // Precondition
+        if(assertType == NameAssertType.PRECOND){ // Precondition
             IllegalArgumentException.assertIsNotNullOrUndefined(other, msg);
-        else if(assertType = NameAssertType.POSTCOND) // Postcondition
+        } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
             MethodFailureException.assertIsNotNullOrUndefined(other, msg);
-        else // Class Invariant
+        } else { // Class Invariant
             InvalidStateException.assertIsNotNullOrUndefined(other, msg);
+        }
     }
 
     /** @methodtype assertion-method */
     protected isCond(cond: boolean, assertType:NameAssertType, msg:string): void {
-        if(assertType = NameAssertType.PRECOND) // Precondition
+        if(assertType == NameAssertType.PRECOND){ // Precondition
             IllegalArgumentException.assertCondition(cond, msg);
-        else if(assertType = NameAssertType.POSTCOND) // Postcondition
+        } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
             MethodFailureException.assertCondition(cond, msg);
-        else // Class Invariant
+        } else { // Class Invariant
             InvalidStateException.assertCondition(cond, msg);
+        } 
     }
 
 }

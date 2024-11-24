@@ -11,7 +11,7 @@ export class StringName extends AbstractName {
         super(delimiter);
 
         // Precondition
-        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, this.err_msg_invalid_input);
 
         // Execution
         this.name = other;
@@ -23,7 +23,7 @@ export class StringName extends AbstractName {
 
     public getComponent(i: number): string {
         // Precondition
-        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
         this.isValidRange(i);
 
         return this.createArrayByDelimiter(this.name)[i];
@@ -31,9 +31,13 @@ export class StringName extends AbstractName {
 
     public setComponent(i: number, c: string) {
         // Precondition
-        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
-        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
         this.isValidRange(i);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
 
         // Execution
         let comps = this.createArrayByDelimiter(this.name);
@@ -43,16 +47,20 @@ export class StringName extends AbstractName {
 
         // Update
         this.updateName(comps);
-
-        // Class invariants
-        this.assertClassInvariants();
     }
 
     public insert(i: number, c: string) {
         // Precondition
-        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
-        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
         this.isValidRange(i);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() + 1;
 
         // Change
         let comps = this.createArrayByDelimiter(this.name);
@@ -60,11 +68,21 @@ export class StringName extends AbstractName {
 
         // Update
         this.updateName(comps);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after insert");
     }
 
     public append(c: string) {
         // Precondition
-        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
+        
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() + 1;
 
         // Change
         let comps = this.createArrayByDelimiter(this.name);
@@ -72,12 +90,21 @@ export class StringName extends AbstractName {
 
         // Update
         this.updateName(comps);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after append");
     }
 
     public remove(i: number) {
         // Precondition
-        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, "Invalid input data given");
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
         this.isValidRange(i);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() - 1;
 
         // Change
         let comps = this.createArrayByDelimiter(this.name);
@@ -85,6 +112,9 @@ export class StringName extends AbstractName {
 
         // Update
         this.updateName(comps);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after remove");        
     }
 
     createEmptyNameWithEqualDelimiter(): Name {
