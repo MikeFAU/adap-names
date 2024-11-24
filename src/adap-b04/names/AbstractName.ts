@@ -19,7 +19,6 @@ export abstract class AbstractName implements Name {
     constructor(delimiter: string = DEFAULT_DELIMITER) {
         // Precondition
         this.isNotNullOrUndefined(delimiter, NameAssertType.PRECOND, this.err_msg_invalid_input);
-        console.info("Super Constr: "+delimiter);
 
         // Execution
         this.doSetDelimiter(delimiter);
