@@ -2,7 +2,7 @@ import { DEFAULT_DELIMITER, ESCAPE_CHARACTER } from "../common/Printable";
 import { Name } from "./Name";
 import { InvalidStateException } from "../common/InvalidStateException";
 import { IllegalArgumentException } from "../common/IllegalArgumentException";
-import { MethodFailureException } from "../common/MethodFailureException";
+import { MethodFailedException } from "../common/MethodFailedException";
 
 export enum NameAssertType {
     PRECOND,
@@ -215,7 +215,7 @@ export abstract class AbstractName implements Name {
         if(assertType == NameAssertType.PRECOND){ // Precondition
             IllegalArgumentException.assertIsNotNullOrUndefined(other, msg);
         } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
-            MethodFailureException.assertIsNotNullOrUndefined(other, msg);
+            MethodFailedException.assertIsNotNullOrUndefined(other, msg);
         } else { // Class Invariant
             InvalidStateException.assertIsNotNullOrUndefined(other, msg);
         }
@@ -226,7 +226,7 @@ export abstract class AbstractName implements Name {
         if(assertType == NameAssertType.PRECOND){ // Precondition
             IllegalArgumentException.assertCondition(cond, msg);
         } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
-            MethodFailureException.assertCondition(cond, msg);
+            MethodFailedException.assertCondition(cond, msg);
         } else { // Class Invariant
             InvalidStateException.assertCondition(cond, msg);
         } 
