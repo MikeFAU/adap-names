@@ -1,69 +1,110 @@
 import { DEFAULT_DELIMITER, ESCAPE_CHARACTER } from "../common/Printable";
 import { Name } from "./Name";
-import { AbstractName } from "./AbstractName";
+import { AbstractName, NameAssertType } from "./AbstractName";
 
 export class StringArrayName extends AbstractName {
 
     protected components: string[] = [];
 
-    constructor(source: string[], delimiter?: string) {
-        super();
-        throw new Error("needs implementation or deletion");
-    }
+    constructor(other: string[], delimiter?: string) {
+        super(delimiter);
 
-    public clone(): Name {
-        throw new Error("needs implementation or deletion");
-    }
+        // Precondition
+        this.isNotNullOrUndefined(other, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isNotNullOrUndefinedArray(other);
 
-    public asString(delimiter: string = this.delimiter): string {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public asDataString(): string {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public isEqual(other: Name): boolean {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public getHashCode(): number {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public isEmpty(): boolean {
-        throw new Error("needs implementation or deletion");
-    }
-
-    public getDelimiterCharacter(): string {
-        throw new Error("needs implementation or deletion");
+        // Execution
+        this.components = other;
     }
 
     public getNoComponents(): number {
-        throw new Error("needs implementation or deletion");
+        return this.components.length;
     }
 
     public getComponent(i: number): string {
-        throw new Error("needs implementation or deletion");
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isValidRange(i);
+
+        return this.components[i];
     }
 
     public setComponent(i: number, c: string) {
-        throw new Error("needs implementation or deletion");
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isValidRange(i);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        this.components[i] = c;
     }
 
     public insert(i: number, c: string) {
-        throw new Error("needs implementation or deletion");
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isValidRange(i);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() + 1;        
+
+        this.components.splice(i, 0, c);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after insert");        
     }
 
     public append(c: string) {
-        throw new Error("needs implementation or deletion");
+        // Precondition
+        this.isNotNullOrUndefined(c, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isCorrectlyEscaped(c);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() + 1;        
+
+        this.components.splice(this.getNoComponents(), 0, c);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after append");        
     }
 
     public remove(i: number) {
-        throw new Error("needs implementation or deletion");
+        // Precondition
+        this.isNotNullOrUndefined(i, NameAssertType.PRECOND, this.err_msg_invalid_input);
+        this.isValidRange(i);
+
+        // Class invariants
+        this.assertClassInvariants();
+
+        // Save expected number of components for post condition
+        let n:number = this.getNoComponents() - 1;
+
+        this.components.splice(i, 1);
+
+        // Postcondition
+        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after remove");        
     }
 
-    public concat(other: Name): void {
-        throw new Error("needs implementation or deletion");
+    createEmptyNameWithEqualDelimiter(): Name {
+        return new StringArrayName([], this.getDelimiterCharacter());
+    }
+
+    //#############################################################//
+    // Further methods added
+
+    /** @methodtype assertion-method */
+    private isNotNullOrUndefinedArray(comps: string[]): void {
+        for(let i=0; i < comps.length; i++)
+            this.isNotNullOrUndefined(comps[i], NameAssertType.PRECOND, this.err_msg_invalid_input);
     }
 }

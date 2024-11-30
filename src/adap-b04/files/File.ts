@@ -25,6 +25,7 @@ export class File extends Node {
 
     public read(noBytes: number): Int8Array {
         // read something
+        this.assertIsInState(FileState.OPEN);
         return new Int8Array();
     }
 
@@ -32,12 +33,6 @@ export class File extends Node {
         // do something
         this.assertIsInState(FileState.OPEN);
         this.doSetFileState(FileState.CLOSED);
-    }
-
-    public read(): Object[]{
-        // Dummy data
-        this.assertIsInState(FileState.OPEN);
-        return [];
     }
 
     public write(o: Object[]): void {
