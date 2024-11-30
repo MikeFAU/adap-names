@@ -125,14 +125,23 @@ export abstract class AbstractName implements Name {
         return this.delimiter;
     }
 
+    /** @methodtype get-method */
     abstract getNoComponents(): number;
 
+    /** @methodtype get-method */
     abstract getComponent(i: number): string;
+    /** @methodtype set-method */
     abstract setComponent(i: number, c: string): void;
 
+    /** @methodtype command-method */
     abstract insert(i: number, c: string): void;
+    /** @methodtype command-method */
     abstract append(c: string): void;
+    /** @methodtype command-method */
     abstract remove(i: number): void;
+
+    /** @methodtype factory-method */
+    abstract createEmptyNameWithEqualDelimiter(): Name;
 
      /** @methodtype command-method */
     public concat(other: Name): void {

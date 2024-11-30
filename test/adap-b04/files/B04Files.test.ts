@@ -60,7 +60,7 @@ describe("Client-File Contract according to ADAP B04 Slide 10", () => {
 
         n.open();
         n.close();
-        expect(() => n.read()).toThrow(new InvalidStateException("invalid file state"));
+        expect(() => n.read(10)).toThrow(new InvalidStateException("invalid file state"));
     });
 
     it("test don't read from a deleted file", async () => {
@@ -70,7 +70,7 @@ describe("Client-File Contract according to ADAP B04 Slide 10", () => {
         let n:File = new File("ls", bin);
 
         n.delete();
-        expect(() => n.read()).toThrow(new InvalidStateException("invalid file state"));
+        expect(() => n.read(10)).toThrow(new InvalidStateException("invalid file state"));
     });
 
     it("test don't write to a closed file", async () => {
