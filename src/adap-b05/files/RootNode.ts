@@ -1,6 +1,11 @@
+import { ExceptionType, AssertionDispatcher } from "../common/AssertionDispatcher";
+import { Exception } from "../common/Exception";
+import { ServiceFailureException } from "../common/ServiceFailureException";
+
 import { Name } from "../names/Name";
 import { StringName } from "../names/StringName";
 import { Directory } from "./Directory";
+import { Node } from "./Node";
 
 export class RootNode extends Directory {
 
@@ -28,6 +33,22 @@ export class RootNode extends Directory {
 
     protected doSetBaseName(bn: string): void {
         // null operation
+    }
+
+    protected doFindNodes(bn: string): Set<Node> {
+        try {
+            return super.doFindNodes(bn);
+        }
+        catch(er) {
+            let ex = er as Exception;
+            ServiceFailureException.assertCondition(false, "service failed", ex); // Make sure that exception is thrown
+            return new Set<Node>(); // Necessary since compiler is complaining??
+        }
+    }
+
+    protected assertIsValidBaseName(bn: string, et: ExceptionType): void {
+        const condition: boolean = (bn == ""); // Root must have "" as base name
+        AssertionDispatcher.dispatch(et, condition, "invalid base name");
     }
 
 }

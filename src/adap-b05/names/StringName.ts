@@ -127,6 +127,9 @@ export class StringName extends AbstractName {
     /** @methodtype helper-method */
     private createArrayByDelimiter(inputName: String): string[] {
         
+        if(inputName.length < 1)
+            return [""];
+
         let retArr:string[] = [];
         let tempStr:string = "";
         let lastChar:string = "";

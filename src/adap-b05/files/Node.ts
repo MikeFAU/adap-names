@@ -57,6 +57,8 @@ export class Node {
      * @param bn basename of node being searched for
      */
     public findNodes(bn: string): Set<Node> {
+        // precondition
+        this.assertClassInvariants();
         return this.doFindNodes(bn);
     }
 

@@ -39,6 +39,17 @@ describe("Basic naming test", () => {
   });
 });
 
+describe("Basic naming test (own extended test)", () => {
+  it("test name checking", () => {
+    let fs: RootNode = createFileSystem();
+    let nodeSet = [...fs.findNodes("ls")];
+    expect(nodeSet.length).toBe(1);
+    let ls: Node = nodeSet[0];
+    //console.info(ls.getFullName());
+    expect(ls.getFullName().isEqual(new StringName("/usr/bin/ls", '/'))).toBe(true);
+  });
+});
+
 function createBuggySetup(): RootNode {
   let rn: RootNode = new RootNode();
 
@@ -66,11 +77,31 @@ describe("Buggy setup test", () => {
       fs.findNodes("ls");
     } catch(er) {
       threwException = true;
-      // let ex: Exception = er as Exception;
-      // expect(ex).toBeInstanceOf(ServiceFailureException);
-      // expect(ex.hasTrigger()).toBe(true);
-      // let tx: Exception = ex.getTrigger();
-      // expect(tx).toBeInstanceOf(InvalidStateException);
+      let ex: Exception = er as Exception;
+      expect(ex instanceof ServiceFailureException);
+      expect(ex.hasTrigger());
+      let tx: Exception = ex.getTrigger();
+      expect(tx instanceof InvalidStateException);
+    }
+    expect(threwException);
+  });
+});
+
+describe("Buggy setup test (own extended test)", () => {
+  it("test finding files", () => {
+    let threwException: boolean = false;
+    try {
+      let fs: RootNode = createBuggySetup();
+      fs.findNodes("ls");
+    } catch(er) {
+      threwException = true;
+      let ex: Exception = er as Exception;
+      expect(ex instanceof ServiceFailureException).toBe(true);
+      expect(ex.message).toBe("service failed");
+      expect(ex.hasTrigger()).toBe(true);
+      let tx: Exception = ex.getTrigger();
+      expect(tx instanceof InvalidStateException).toBe(true);
+      expect(tx.message).toBe("invalid base name");
     }
     expect(threwException).toBe(true);
   });
