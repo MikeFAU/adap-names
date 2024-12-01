@@ -32,6 +32,10 @@ export abstract class AbstractName implements Name {
         let n: Name = this.createEmptyNameWithEqualDelimiter();
         n.concat(this);
 
+        // Minor bugfix for handling of empty StringNames
+        if(n.getNoComponents() > 0 && n.getComponent(0) === "" && this.getComponent(0) != "")
+            n.remove(0);
+
         // Postcondition
         this.isCond(this.isEqual(n), NameAssertType.POSTCOND, "Could not clone object");
 
@@ -117,7 +121,7 @@ export abstract class AbstractName implements Name {
         // Class Invariants
         this.assertClassInvariants();
 
-        return this.getNoComponents() < 1;
+        return this.getNoComponents() < 1 || (this.getNoComponents() == 1 && this.getComponent(0) === "");
     }
 
     /** @methodtype get-method */
