@@ -162,6 +162,7 @@ export class StringName extends AbstractName {
     private updateName(c: string[]): void {
         let newName = c.join(this.delimiter);
         this.name = newName;
+        this.noComponents = c.length;
     }
 
 }

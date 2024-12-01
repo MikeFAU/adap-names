@@ -20,4 +20,18 @@ export class Directory extends Node {
         this.childNodes.delete(cn); // Yikes! Should have been called remove
     }
 
+    protected doFindNodes(bn: string): Set<Node> {
+        const retSet = super.doFindNodes(bn);
+
+        for(var node of this.getChildNodes().values()){
+            for(var foundNode of node.findNodes(bn)){
+                retSet.add(foundNode);
+            }
+        }
+        return new Set<Node>(retSet);
+    }
+
+    private getChildNodes(): Set<Node> {
+        return new Set(this.childNodes);
+    }
 }
