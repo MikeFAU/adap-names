@@ -1,6 +1,6 @@
-import { ExceptionType, AssertionDispatcher } from "../common/AssertionDispatcher";
 import { Exception } from "../common/Exception";
 import { ServiceFailureException } from "../common/ServiceFailureException";
+import { InvalidStateException } from "../common/InvalidStateException";
 
 import { Name } from "../names/Name";
 import { StringName } from "../names/StringName";
@@ -41,14 +41,13 @@ export class RootNode extends Directory {
         }
         catch(er) {
             let ex = er as Exception;
-            ServiceFailureException.assertCondition(false, "service failed", ex); // Make sure that exception is thrown
+            ServiceFailureException.assert(false, "service failed", ex); // Make sure that exception is thrown
             return new Set<Node>(); // Necessary since compiler is complaining??
         }
     }
 
-    protected assertIsValidBaseName(bn: string, et: ExceptionType): void {
+    protected assertIsValidBaseName(bn: string): void {
         const condition: boolean = (bn == ""); // Root must have "" as base name
-        AssertionDispatcher.dispatch(et, condition, "invalid base name");
+        InvalidStateException.assert(condition, "invalid base name");
     }
-
 }

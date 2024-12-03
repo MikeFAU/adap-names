@@ -71,4 +71,13 @@ export class Node {
         return new Set<Node>(retSet);
     }
 
+    protected assertClassInvariants(): void {
+        const bn: string = this.doGetBaseName();
+        this.assertIsValidBaseName(bn);
+    }
+
+    protected assertIsValidBaseName(bn: string): void {
+        const condition: boolean = (bn != "");
+        InvalidStateException.assert(condition, "invalid base name");
+    }
 }
