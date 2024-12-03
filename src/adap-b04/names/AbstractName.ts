@@ -213,22 +213,22 @@ export abstract class AbstractName implements Name {
     /** @methodtype assertion-method */
     protected isNotNullOrUndefined(other: Object, assertType:NameAssertType, msg:string): void {
         if(assertType == NameAssertType.PRECOND){ // Precondition
-            IllegalArgumentException.assertIsNotNullOrUndefined(other, msg);
+            IllegalArgumentException.assert((other != null && other != undefined), msg);
         } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
-            MethodFailedException.assertIsNotNullOrUndefined(other, msg);
+            MethodFailedException.assert((other != null && other != undefined), msg);
         } else { // Class Invariant
-            InvalidStateException.assertIsNotNullOrUndefined(other, msg);
+            InvalidStateException.assert((other != null && other != undefined), msg);
         }
     }
 
     /** @methodtype assertion-method */
     protected isCond(cond: boolean, assertType:NameAssertType, msg:string): void {
         if(assertType == NameAssertType.PRECOND){ // Precondition
-            IllegalArgumentException.assertCondition(cond, msg);
+            IllegalArgumentException.assert(cond, msg);
         } else if(assertType == NameAssertType.POSTCOND){ // Postcondition
-            MethodFailedException.assertCondition(cond, msg);
+            MethodFailedException.assert(cond, msg);
         } else { // Class Invariant
-            InvalidStateException.assertCondition(cond, msg);
+            InvalidStateException.assert(cond, msg);
         } 
     }
 
