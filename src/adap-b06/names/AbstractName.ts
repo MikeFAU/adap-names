@@ -30,11 +30,14 @@ export abstract class AbstractName implements Name {
     /** @methodtype cloning-method */
     public clone(): Name {
         let n: Name = this.createEmptyNameWithEqualDelimiter();
-        n.concat(this);
+        
+        for(let i = 0; i < this.getNoComponents(); i++){
+            n = n.append(this.getComponent(i));
+        }
 
         // Minor bugfix for handling of empty StringNames
         if(n.getNoComponents() > 0 && n.getComponent(0) === "" && this.getComponent(0) != "")
-            n.remove(0);
+            n = n.remove(0);
 
         // Postcondition
         this.isCond(this.isEqual(n), NameAssertType.POSTCOND, "Could not clone object");
@@ -159,13 +162,12 @@ export abstract class AbstractName implements Name {
         let n:number = this.getNoComponents() + other.getNoComponents();
 
         let newName = this.clone();
-
         for(let i = 0; i < other.getNoComponents(); i++){
-            newName.append(other.getComponent(i));
+            newName = newName.append(other.getComponent(i));
         }
         
         // Postcondition
-        this.isCond(n === this.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after concat");
+        this.isCond(n === newName.getNoComponents(), NameAssertType.POSTCOND, "Invalid Number of components after concat");
         return newName;
     }
 

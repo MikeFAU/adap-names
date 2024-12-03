@@ -269,3 +269,47 @@ describe("StringArrayName Design by Contract testing", () => {
         expect(() => n.remove(idx)).toThrow(new IllegalArgumentException(err_msg));
     });
 });
+
+describe("Equality test", () => {
+    it("test isEqual", () => {
+      let sn1: Name = new StringName("oss#fau#de", "#");
+      let san1: Name = new StringArrayName(["oss", "fau", "de"], "#");
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+  
+      sn1 = sn1.insert(1, "test");
+      san1 = san1.insert(1, "test");
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      sn1 = sn1.setComponent(2, "new");
+      san1 = san1.setComponent(2, "new");
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      let csn1:Name = new StringName("new#string", "#");
+      sn1 = sn1.concat(csn1);
+      san1 = san1.concat(csn1);
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      let csan1:Name = new StringArrayName(["another", "new", "name"], "#");
+      sn1 = sn1.concat(csan1);
+      san1 = san1.concat(csan1);
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      sn1 = sn1.remove(4);
+      san1 = san1.remove(4);
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      sn1 = sn1.append("funny");
+      san1 = san1.append("funny");
+      expect(sn1.isEqual(san1)).toBe(true);
+      expect(sn1.getHashCode() == san1.getHashCode()).toBe(true);
+
+      // Final compare
+      expect(sn1.asDataString()).toBe(san1.asDataString());
+    });
+  });

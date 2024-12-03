@@ -37,15 +37,17 @@ describe("Own Basic StringArrayName function tests", () => {
 
   it("test set Component", () => {
     let n: Name = new StringArrayName(["oss", "fau", "de"]);
-    n.setComponent(1, "new")
-    expect(n.asString()).toBe("oss.new.de");
+    let n_new = n.setComponent(1, "new");
+    expect(n.asString()).toBe("oss.fau.de");
+    expect(n_new.asString()).toBe("oss.new.de");
   });
 
   it("test concat", () => {
     let n: StringArrayName = new StringArrayName(["oss", "fau", "de"]);
     let other: StringArrayName = new StringArrayName(["own", "test"]);
-    n.concat(other);
-    expect(n.asString()).toBe("oss.fau.de.own.test");
+    let n_new = n.concat(other);
+    expect(n.asString()).toBe("oss.fau.de");
+    expect(n_new.asString()).toBe("oss.fau.de.own.test");
   });
 });
 
@@ -92,15 +94,17 @@ describe("Own Basic StringName function tests", () => {
 
   it("test set Component", () => {
     let n: Name = new StringName("oss.fau.de");
-    n.setComponent(1, "new")
-    expect(n.asString()).toBe("oss.new.de");
+    let n_new = n.setComponent(1, "new");
+    expect(n.asString()).toBe("oss.fau.de");
+    expect(n_new.asString()).toBe("oss.new.de");
   });
 
   it("test concat Component", () => {
     let n: StringName = new StringName("oss.fau.de");
     let other: StringName = new StringName("own.test");
-    n.concat(other);
-    expect(n.asString()).toBe("oss.fau.de.own.test");
+    let n_new = n.concat(other);
+    expect(n.asString()).toBe("oss.fau.de");
+    expect(n_new.asString()).toBe("oss.fau.de.own.test");
   });
 });
 
